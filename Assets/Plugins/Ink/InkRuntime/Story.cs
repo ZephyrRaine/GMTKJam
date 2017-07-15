@@ -150,6 +150,7 @@ namespace Ink.Runtime
             ResetState ();
         }
 
+
         /// <summary>
         /// The Story itself in JSON representation.
         /// </summary>

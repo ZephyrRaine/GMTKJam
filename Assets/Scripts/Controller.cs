@@ -93,10 +93,6 @@ public class Controller : MonoBehaviour
         }
 
         Person oldOne = _currentHost;
-
-
-
-
         _currentHost = target;
         if(oldOne != null)
         {
@@ -104,6 +100,7 @@ public class Controller : MonoBehaviour
             oldOne.GetComponent<MeshRenderer>().material = ModelsLibrary.ML.randomMaterial;
         }
         LeavePerson(target); //target.NotNearby(gameObject);
+        InkOverlord.IO.SwitchIdentity(target._identity);
         target.GetComponent<MeshRenderer>().material = ModelsLibrary.ML.controllerMaterial;
         _hostRigidBody = target.GetComponent<Rigidbody>();
     }

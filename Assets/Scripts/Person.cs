@@ -8,7 +8,7 @@ public class Person : MonoBehaviour {
     TextBox _textBox;
 
     [SerializeField]
-    int _singleLine;
+    int _singleLineIndex;
     [SerializeField]
     string _inkKnot;
     private bool _engaged;
@@ -28,6 +28,9 @@ public class Person : MonoBehaviour {
     }
 
     private ChoiceManager _choiceManager;
+    private string _singleLine;
+
+    public string _identity;
 
     void Start () 
 	{
@@ -82,10 +85,17 @@ public class Person : MonoBehaviour {
     }
 	public void Talk()
 	{
-		if(_textBox == null && _singleLine != -1)
+        if (_singleLineIndex != -1)
+            _singleLine = InkOverlord.IO.GetSingleLine(_singleLineIndex);
+        else if (_inkKnot != string.Empty)
+            _singleLine = InkOverlord.IO.GetSpecialSingleLine(_inkKnot);
+        else
+            _singleLine = string.Empty;
+            
+		if(_textBox == null && _singleLine != string.Empty)
 		{
         	_textBox = TextBox.CreateTextBox(transform);
-            _textBox.FeedLine(InkOverlord.IO.GetSingleLine(_singleLine));
+            _textBox.FeedLine(_singleLine);
             _textBox.ReadLine();
         }
     }
@@ -94,17 +104,19 @@ public class Person : MonoBehaviour {
     {
         if (_inkKnot != string.Empty)
         {
-            if (_textBox == null)
+            if (_textBox != null)
             {
-                _textBox = TextBox.CreateTextBox(transform);
-                InkOverlord.IO.RequestKnot(_textBox, _inkKnot);
-                _choiceManager = ChoiceManager.CreateChoiceManager(transform);
-                _choiceManager.Input += Choice;
-                _textBox.finishedCallback += GetLine;
-                GetLine(true);
-                _engaged = true;
-                _lastLine = false;
+                Destroy(_textBox.gameObject);
             }
+
+            _textBox = TextBox.CreateTextBox(transform);
+            InkOverlord.IO.RequestKnot(_textBox, _inkKnot);
+            _choiceManager = ChoiceManager.CreateChoiceManager(transform);
+            _choiceManager.Input += Choice;
+            _textBox.finishedCallback += GetLine;
+            GetLine(true);
+            _engaged = true;
+            _lastLine = false;
         }
     }
     public void Disengage()
@@ -152,18 +164,16 @@ public class Person : MonoBehaviour {
         if (_engaged)
         {
             Debug.Log("ENGAGED");
-            if (Input.GetButtonDown("Interact"))
+            if(_lastLine && Input.GetButtonUp("Interact"))
             {
-                if(_lastLine)
-                {
-                    if(_dFinishedTalking != null)
-                        _dFinishedTalking();
-                }
-                else if (_isWaiting)
-                {
-                    _isWaiting = false;
-                    _textBox.ReadLine();
-                }
+                if(_dFinishedTalking != null)
+                _dFinishedTalking();
+            }
+            else if (_isWaiting && Input.GetButtonDown("Interact"))
+            {
+                _isWaiting = false;
+                _textBox.ReadLine();
+                
             }
             else if (_textBox._isReading)
             {

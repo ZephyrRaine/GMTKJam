@@ -41,6 +41,24 @@ public class InkOverlord : MonoBehaviour {
         return _inkStory.currentChoices;
     }
 
+    public string GetSpecialSingleLine(string knot)
+    {
+        _inkStory.ChoosePathString(knot+"_SL");
+        if(_inkStory.canContinue)
+        {
+            return _inkStory.ContinueMaximally();
+        }
+        else
+        {
+            return string.Empty;
+        }
+    }
+
+    public void SwitchIdentity(string identity)
+    {
+        _inkStory.variablesState["identity"] = identity;
+    }
+
 	public bool MakeChoice(int index)
 	{
 		if(index < _inkStory.currentChoices.Count)
@@ -53,8 +71,9 @@ public class InkOverlord : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start () 
-	{
+    void Awake()
+    { 
+	
         if (_instance == null)
             _instance = this;
         else
