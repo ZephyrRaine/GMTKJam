@@ -129,32 +129,19 @@ public class Controller : MonoBehaviour
 
             if (_personTriggered.Count > 0)
             {
-                if (Input.GetAxis("Interact") > 0)
+                if (Input.GetButtonDown("Interact") || Input.GetMouseButtonDown(0))
                 {
-                    if (!_interacting)
-                    {
-                        _interacting = true;
+                    
                         if (_dInteractOnce != null)
                             _dInteractOnce();
-                    }
-                }
-                else
-                {
-                    _interacting = false;
+                    
                 }
 
-                if (Input.GetAxis("Switch") > 0)
+                if (Input.GetButtonDown("Switch")  || Input.GetMouseButtonDown(1))
                 {
-                    if (!_switching)
-                    {
-                        _switching = true;
-                        if (_dSwitchOnce != null)
-                            _dSwitchOnce();
-                    }
-                }
-                else
-                {
-                    _switching = false;
+                    if (_dSwitchOnce != null)
+                        _dSwitchOnce();
+                
                 }
             }
         }
