@@ -17,7 +17,6 @@ public class ClickableTextBox : TextMeshBox, IPointerEnterHandler, IPointerExitH
     public void Start()
     {
         RealStart();
-        finishedCallback += MakeAvailable;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -56,9 +55,5 @@ public class ClickableTextBox : TextMeshBox, IPointerEnterHandler, IPointerExitH
             _textComponent.color = _colorDefault;
         }
     }
-
-    public void MakeAvailable()
-    {
-        _isAvailable = true;
-    }
+  
 }

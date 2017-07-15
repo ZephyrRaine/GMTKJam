@@ -8,7 +8,6 @@ public class NavigableChoiceManager : ChoiceManager
     private bool _released;
     private float _timer;
     public float _waitTimer;
-
     bool _releasedInteract;
 
     // Use this for initialization
@@ -66,7 +65,8 @@ public class NavigableChoiceManager : ChoiceManager
                 if (_releasedInteract)
                 {
                     _releasedInteract = false;
-                    Input(index);
+					if(GetComponentsInChildren<InteractiveTextBox>()[index]._isAvailable)
+	                    Input(index);
                 }
             }
             else

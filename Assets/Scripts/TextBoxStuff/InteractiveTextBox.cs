@@ -3,7 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InteractiveTextBox : TextBox, IInteractiveTextBox {
+public class InteractiveTextBox : TextBox, IInteractiveTextBox 
+{
+    public bool _isAvailable;
+
+    public void Start()
+    {
+        RealStart();
+        finishedCallback += MakeAvailable;
+    }
+
+    public void MakeAvailable()
+    {
+        _isAvailable = true;
+    }
+	
+
     public void DefaultStyle()
     {
         _textComponent.color = _colorDefault;

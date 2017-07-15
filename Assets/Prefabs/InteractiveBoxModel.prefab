@@ -45,7 +45,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 21033687623228702, guid: 59c7841bf1ae4ec45bbc8f784352b374, type: 2}
+  - {fileID: 2180264, guid: 715b80e429c437e40867928a4e1fc975, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -97,6 +97,7 @@ MonoBehaviour:
   _readingSpeedReference: 0.1
   _colorDefault: {r: 0.21410035, g: 0.44117647, b: 0.44117647, a: 1}
   _isReading: 0
+  _isAvailable: 0
   _hoverColor: {r: 0.6397059, g: 0.29163063, b: 0.5724912, a: 1}
   _pressedColor: {r: 0.322, g: 0.39705884, b: 0.39705884, a: 1}
 --- !u!114 &114439436247276622
@@ -120,9 +121,8 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 59c7841bf1ae4ec45bbc8f784352b374, type: 2}
-  m_sharedMaterial: {fileID: 21033687623228702, guid: 59c7841bf1ae4ec45bbc8f784352b374,
-    type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 715b80e429c437e40867928a4e1fc975, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 715b80e429c437e40867928a4e1fc975, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
