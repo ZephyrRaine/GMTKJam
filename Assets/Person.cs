@@ -14,6 +14,11 @@ public class Person : MonoBehaviour {
     private bool _engaged;
     private bool _isWaiting;
 
+    public delegate void FeedbackDelegate();
+    public FeedbackDelegate _dFinishedTalking;
+
+    bool _lastLine;
+
     public bool _isEngageable
     {
         get
@@ -26,7 +31,7 @@ public class Person : MonoBehaviour {
 
     void Start () 
 	{
-
+        _dFinishedTalking += Disengage;
     }
 
     void GetLine()
@@ -59,15 +64,15 @@ public class Person : MonoBehaviour {
         }
         else
         {
-            Debug.Log("OH SHIT");
+            _lastLine = true;
         }
     }
 
     public void Choice(int choice)
     {
-            _choiceManager.ClearChoices();
-            InkOverlord.IO.MakeChoice(choice);
-            GetLine(true);
+        _choiceManager.ClearChoices();
+        InkOverlord.IO.MakeChoice(choice);
+        GetLine(true);
     }
 
     void OnDrawGizmos()
@@ -97,9 +102,15 @@ public class Person : MonoBehaviour {
                 _choiceManager.Input += Choice;
                 _textBox.finishedCallback += GetLine;
                 GetLine(true);
-
+                _engaged = true;
+                _lastLine = false;
             }
         }
+    }
+    public void Disengage()
+    {
+        NotNearby(null);
+        _engaged = false;
     }
     public void IsNearby(GameObject player)
     {
@@ -108,6 +119,11 @@ public class Person : MonoBehaviour {
 
     public void NotNearby(GameObject player)
     {
+        if(_engaged)
+        {
+            InkOverlord.IO.Revoke(_textBox);
+            _engaged = false;
+        }
         if (_textBox != null)
         {
             Destroy(_textBox.gameObject);
@@ -132,12 +148,22 @@ public class Person : MonoBehaviour {
             _choiceManager.transform.position = transform.position + Vector3.up * 2f + ((Camera.main.transform.position - transform.position).normalized * .75f);
         }
 
+        Debug.Log("UPDATE");
         if (_engaged)
         {
-            if (_isWaiting)
+            Debug.Log("ENGAGED");
+            if (Input.GetButtonDown("Interact"))
             {
-                _isWaiting = false;
-                _textBox.ReadLine();
+                if(_lastLine)
+                {
+                    if(_dFinishedTalking != null)
+                        _dFinishedTalking();
+                }
+                else if (_isWaiting)
+                {
+                    _isWaiting = false;
+                    _textBox.ReadLine();
+                }
             }
             else if (_textBox._isReading)
             {

@@ -95,10 +95,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _currentString: 
   _readingSpeedReference: 0.1
-  _colorDefault: {r: 0.56412196, g: 0.8161765, b: 0.8161765, a: 1}
+  _colorDefault: {r: 0.21410035, g: 0.44117647, b: 0.44117647, a: 1}
   _isReading: 0
-  _hoverColor: {r: 0.29163063, g: 0.6397059, b: 0.6397059, a: 1}
-  _pressedColor: {r: 0.20144898, g: 0.39705884, b: 0.39705884, a: 0}
+  _hoverColor: {r: 0.6397059, g: 0.29163063, b: 0.5724912, a: 1}
+  _pressedColor: {r: 0.322, g: 0.39705884, b: 0.39705884, a: 1}
 --- !u!114 &114439436247276622
 MonoBehaviour:
   m_ObjectHideFlags: 1

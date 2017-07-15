@@ -53,4 +53,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _textBoxModel: {fileID: 1704168337708662, guid: afafd147dc587304baa0fded940f64ad,
     type: 2}
-  _waitTimer: 1
+  _waitTimer: 0.5

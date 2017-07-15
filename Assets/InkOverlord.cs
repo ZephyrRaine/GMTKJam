@@ -76,7 +76,10 @@ public class InkOverlord : MonoBehaviour {
         }
     }
 
-	
+    public void Revoke(TextBox receiver)
+    {
+        _receiver = null;
+    }
 
     public string GetSingleLine(int index)
     {

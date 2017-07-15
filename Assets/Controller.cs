@@ -22,6 +22,7 @@ public class Controller : MonoBehaviour
     InteractDelegate _dJumpOnce;
     public Person _target;
     Person _currentHost;
+    Person _inATalk;
 
     List<Person> _personTriggered;
     Rigidbody _hostRigidBody;
@@ -49,6 +50,7 @@ public class Controller : MonoBehaviour
                 LeavePerson(p);
             }
         }
+        _inATalk = person;
         person.Engage();
     }
     void PlayerJump()
@@ -63,34 +65,45 @@ public class Controller : MonoBehaviour
 
     void PlayerEngage()
     {
-        foreach(Person p in _personTriggered)
+        if (_inATalk == null)
         {
-            if(p._isEngageable)
+            foreach (Person p in _personTriggered)
             {
-                EngagePerson(p);
-                return;
+                if (p._isEngageable)
+                {
+                    EngagePerson(p);
+                    p._dFinishedTalking += PlayerDisengage;
+                    return;
+                }
             }
         }
+    }
+
+    void PlayerDisengage()
+    {
+        _inATalk = null;
     }
 
     void ControlPerson(Person target)
     {
         if(target == _currentHost)
         {
+            Debug.LogError("Target can't be current host");
             Debug.Break();
         }
 
+        Person oldOne = _currentHost;
 
-        if(_currentHost != null)
-        {
-            TriggerPerson(_currentHost);
-            _currentHost.GetComponent<MeshRenderer>().material = ModelsLibrary.ML.randomMaterial;
-        }
 
-        LeavePerson(target); //target.NotNearby(gameObject);
 
 
         _currentHost = target;
+        if(oldOne != null)
+        {
+            TriggerPerson(oldOne);
+            oldOne.GetComponent<MeshRenderer>().material = ModelsLibrary.ML.randomMaterial;
+        }
+        LeavePerson(target); //target.NotNearby(gameObject);
         target.GetComponent<MeshRenderer>().material = ModelsLibrary.ML.controllerMaterial;
         _hostRigidBody = target.GetComponent<Rigidbody>();
     }
@@ -165,15 +178,22 @@ public class Controller : MonoBehaviour
 
     void TriggerPerson(Person trigger)
     {
-        trigger.IsNearby(gameObject);
-        _personTriggered.Add(trigger);
-        trigger.Talk();
+        if (trigger != _currentHost)
+        {
+            trigger.IsNearby(gameObject);
+            _personTriggered.Add(trigger);
+            trigger.Talk();
+        }
     }
 
     void LeavePerson(Person trigger)
     {
+        if(trigger == _inATalk)
+        {
+            _inATalk = null;
+        }
         trigger.NotNearby(gameObject);
-        _personTriggered.Remove(trigger);
+        _personTriggered.Remove(trigger);   
     }
 
     void OnTriggerEnter(Collider other)
@@ -184,7 +204,6 @@ public class Controller : MonoBehaviour
             if (trigger != null && trigger != _currentHost)
             {
                 TriggerPerson(trigger);
-                
             }
         }
     }
