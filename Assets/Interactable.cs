@@ -24,7 +24,7 @@ public class Interactable : MonoBehaviour
        if(other.gameObject.GetComponent<Controller>() != null)
         {
             Debug.Log("SALUUUT");
-            GetComponent<MeshRenderer>().material.color = Color.blue;
+            GetComponent<MeshRenderer>().material.color = new Color(1f, 1f, 0f, 0.35f);
             if(_dEnter != null)
                 _dEnter(other.gameObject);
         }
@@ -36,7 +36,7 @@ public class Interactable : MonoBehaviour
         if (other.gameObject.GetComponent<Controller>() != null)
         {
             Debug.Log("AFEZF");
-            GetComponent<MeshRenderer>().material.color = Color.white;
+            GetComponent<MeshRenderer>().material.color = new Color(0,0,0,0);
             if (_dExit != null)
                 _dExit(other.gameObject);
         }

@@ -15,8 +15,11 @@ public class ModelsLibrary : MonoBehaviour {
 	}
 
     public GameObject textBox;
-	
-    void Start () 
+    public GameObject choiceBox;
+    public Material controllerMaterial;
+    public Material randomMaterial;
+
+    void Awake () 
 	{
 		if(_instance == null)
         	_instance = this;

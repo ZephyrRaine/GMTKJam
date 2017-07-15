@@ -11,65 +11,193 @@ public class Controller : MonoBehaviour
 
     bool _jumping;
     bool _interacting;
+    bool _switching;
 
-    public delegate void InteractDelegate();
-    public InteractDelegate _dSwitch;
-    public InteractDelegate _dInteractOnce;
-    public InteractDelegate _dJumpOnce;
+    delegate void InteractDelegate();
+
+    delegate void PersonDelegate(Person p);
+
+    InteractDelegate _dSwitchOnce;
+    InteractDelegate _dInteractOnce;
+    InteractDelegate _dJumpOnce;
+    public Person _target;
+    Person _currentHost;
+
+    List<Person> _personTriggered;
+    Rigidbody _hostRigidBody;
     // Use this for initialization
     void Start () 
     {
         _dJumpOnce += PlayerJump;
+        _dSwitchOnce += PlayerSwitch;
+        _dInteractOnce += PlayerEngage;
+        if(_target == null)
+        {
+            Debug.LogError("Controller must be on a person");
+        }
+        _personTriggered = new List<Person>();
+        ControlPerson(_target);  
     }
 
+    void EngagePerson(Person person)
+    {
+        for (int i = _personTriggered.Count - 1; i >= 0; i--)
+        {
+            Person p = _personTriggered[i];
+            if (p != person)
+            {
+                LeavePerson(p);
+            }
+        }
+        person.Engage();
+    }
     void PlayerJump()
     {
-            GetComponent<Rigidbody>().AddForce(_jumpSpeed * Vector3.up, ForceMode.Impulse);   
+        _hostRigidBody.AddForce(_jumpSpeed * Vector3.up, ForceMode.Impulse);   
     }
 
-    void InteractOnce()
+    void PlayerSwitch()
     {
-        if(!_interacting)
+        ControlPerson(_personTriggered[0]);
+    }
+
+    void PlayerEngage()
+    {
+        foreach(Person p in _personTriggered)
         {
-            _interacting = true;
+            if(p._isEngageable)
+            {
+                EngagePerson(p);
+                return;
+            }
         }
+    }
+
+    void ControlPerson(Person target)
+    {
+        if(target == _currentHost)
+        {
+            Debug.Break();
+        }
+
+
+        if(_currentHost != null)
+        {
+            TriggerPerson(_currentHost);
+            _currentHost.GetComponent<MeshRenderer>().material = ModelsLibrary.ML.randomMaterial;
+        }
+
+        LeavePerson(target); //target.NotNearby(gameObject);
+
+
+        _currentHost = target;
+        target.GetComponent<MeshRenderer>().material = ModelsLibrary.ML.controllerMaterial;
+        _hostRigidBody = target.GetComponent<Rigidbody>();
     }
 	
 	// Update is called once per frame
 	void Update () 	
 	{
+        if(_currentHost != null)
+        {
+            transform.position = _currentHost.transform.position;
+    
+         
+            if (Input.GetAxis("Jump") > 0)
+            {
+                if (!_jumping)
+                {
+                    _jumping = true;
+                    if (_dJumpOnce != null)
+                        _dJumpOnce();
+                }
+            }
+            else
+            {
+                _jumping = false;
+            }
+
+            if (_personTriggered.Count > 0)
+            {
+                if (Input.GetAxis("Interact") > 0)
+                {
+                    if (!_interacting)
+                    {
+                        _interacting = true;
+                        if (_dInteractOnce != null)
+                            _dInteractOnce();
+                    }
+                }
+                else
+                {
+                    _interacting = false;
+                }
+
+                if (Input.GetAxis("Switch") > 0)
+                {
+                    if (!_switching)
+                    {
+                        _switching = true;
+                        if (_dSwitchOnce != null)
+                            _dSwitchOnce();
+                    }
+                }
+                else
+                {
+                    _switching = false;
+                }
+            }
+        }
+        
+    }
+
+    void FixedUpdate()
+    {
         float verticalAxis = Input.GetAxis("Vertical");
         float horizontalAxis = Input.GetAxis("Horizontal");
-        GetComponent<Rigidbody>().AddForce(verticalAxis * Vector3.forward*_speed, ForceMode.Acceleration);
-        GetComponent<Rigidbody>().AddForce(horizontalAxis * Vector3.right*_speed, ForceMode.Acceleration);
-        Debug.Log(Input.GetAxis("Jump"));
-        if (Input.GetAxis("Jump") > 0)
+        float lookHorizontalAxis = Input.GetAxis("Mouse X");
+        Vector3 dir = (transform.position - Camera.main.transform.position).normalized;
+        _hostRigidBody.AddForce(verticalAxis * dir * _speed, ForceMode.Acceleration);
+        _hostRigidBody.AddForce(horizontalAxis * Vector3.Cross(Vector3.up, dir) * _speed, ForceMode.Acceleration);
+        if (Mathf.Abs(lookHorizontalAxis) >= 0.1f)
+            transform.localEulerAngles = transform.localEulerAngles + new Vector3(0, lookHorizontalAxis, 0);
+    }
+
+    void TriggerPerson(Person trigger)
+    {
+        trigger.IsNearby(gameObject);
+        _personTriggered.Add(trigger);
+        trigger.Talk();
+    }
+
+    void LeavePerson(Person trigger)
+    {
+        trigger.NotNearby(gameObject);
+        _personTriggered.Remove(trigger);
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (_currentHost != null)
         {
-            if (!_jumping)
+            Person trigger = other.GetComponent<Person>();
+            if (trigger != null && trigger != _currentHost)
             {
-                _jumping = true;
-                if (_dJumpOnce != null)
-                    _dJumpOnce();
+                TriggerPerson(trigger);
+                
             }
         }
-        else
-        {
-            _jumping = false;
-        }
+    }
 
-
-        if(Input.GetAxis("Interact") > 0)
+    void OnTriggerExit(Collider other)
+    {
+        if (_currentHost != null)
         {
-            if (!_interacting)
+            Person trigger = other.GetComponent<Person>();
+            if (trigger != null && trigger != _currentHost)
             {
-                _interacting = true;
-                if (_dInteractOnce != null)
-                    _dInteractOnce();
+                LeavePerson(trigger);
             }
-        }
-        else
-        {
-            _interacting = false;
         }
     }
 }

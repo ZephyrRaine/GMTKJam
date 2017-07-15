@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 1d73ac7f7802225468c1d1114dd93e32
+timeCreated: 1500050455
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Verily Serif Mono
+  fontNames:
+  - Verily Serif Mono
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

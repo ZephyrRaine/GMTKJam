@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 8153bd1247fc20341b02285a1c3045d0
+timeCreated: 1500071041
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Padauk
+  fontNames:
+  - Padauk
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

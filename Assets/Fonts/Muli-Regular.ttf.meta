@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: a554f7bd2370bc44b87d8ee9bc311c2c
+timeCreated: 1483964326
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Muli
+  fontNames:
+  - Muli
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
