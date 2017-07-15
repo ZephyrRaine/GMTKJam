@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Ink.Runtime;
+using System;
+
 public class InkOverlord : MonoBehaviour {
 
     static InkOverlord _instance;
@@ -15,7 +17,7 @@ public class InkOverlord : MonoBehaviour {
 
     [SerializeField] TextAsset _storyScript;
     Story _inkStory;
-    TextBox _receiver;
+    Person _receiver;
 
 	public bool canContinue
 	{
@@ -43,20 +45,38 @@ public class InkOverlord : MonoBehaviour {
 
     public string GetSpecialSingleLine(string knot)
     {
-        _inkStory.ChoosePathString(knot+"_SL");
-        if(_inkStory.canContinue)
+        if(_inkStory.HasFunction(knot+".SL"))
         {
-            return _inkStory.ContinueMaximally();
+            _inkStory.ChoosePathString(knot + ".SL");
+            string s = _inkStory.Continue();
+            s = s.Trim();
+            Debug.Log(s+ "- " + s.Length);
+            if(s == "NONE")
+            {
+                return string.Empty;
+            }
+            else 
+                return s;
         }
         else
         {
+            Debug.Log(knot + ".SL not found");
             return string.Empty;
         }
     }
 
+    public string GetCurrentIdentity()
+    {
+        if(_inkStory != null)
+        {
+            return _inkStory.variablesState["IDENTITY"].ToString();
+        }
+        return "NaN";
+    }
+    
     public void SwitchIdentity(string identity)
     {
-        _inkStory.variablesState["identity"] = identity;
+        _inkStory.variablesState["IDENTITY"] = identity;
     }
 
 	public bool MakeChoice(int index)
@@ -69,7 +89,8 @@ public class InkOverlord : MonoBehaviour {
         Debug.LogError("INVALID CHOICE INDEX");
         return false;
     }
-
+    List<string> RandomPersonExisting;
+    List<string> RandomPersonAvailable;
     // Use this for initialization
     void Awake()
     { 
@@ -80,9 +101,51 @@ public class InkOverlord : MonoBehaviour {
             Destroy(gameObject);
 
         _inkStory = new Story(_storyScript.text);
+        _inkStory.BindExternalFunction("CANSWITCH", () =>
+       {
+           _receiver.MakeSwitchable();
+       });
+    
+
+       _inkStory.BindExternalFunction("TRIGGEREVENT", (string id) =>
+       {
+           InkEventWatcher.Trigger(id);
+       });
     }
 
-	public void RequestKnot(TextBox receiver, string knotPath)
+    public string RequestRandomPerson()
+    {
+        if(RandomPersonExisting == null)
+        {
+            RandomPersonExisting = new List<string>();
+            for (int i = 0; i < (int)_inkStory.variablesState["RANDOM_COUNT"]; i++)
+            {
+                RandomPersonExisting.Add("RANDOM" + i.ToString());
+            }
+            RandomPersonAvailable = new List<string>(RandomPersonExisting);
+        }
+
+        if(RandomPersonAvailable.Count == 0)
+        {
+            RandomPersonAvailable = new List<string>(RandomPersonExisting);
+        }
+
+        int index = UnityEngine.Random.Range(0, RandomPersonAvailable.Count);
+        string knot = RandomPersonAvailable[index];
+        RandomPersonAvailable.Remove(knot);
+        return knot;
+    }
+
+    public string GetRealKnot(string knotPath)
+    {
+        string trueKnot = knotPath + ".DIALOGUE";
+        if (_inkStory.HasFunction(trueKnot))
+        {
+            return trueKnot;
+        }
+        return string.Empty;
+    }
+	public bool RequestKnot(Person receiver, string knotPath)
 	{
 		if(_receiver != null)
 		{
@@ -90,9 +153,15 @@ public class InkOverlord : MonoBehaviour {
         }
 		else
 		{
-        	_receiver = receiver;
-            _inkStory.ChoosePathString(knotPath);
+            string trueKnot = GetRealKnot(knotPath);
+            if(trueKnot != string.Empty)
+            {
+                _inkStory.ChoosePathString(trueKnot);
+                _receiver = receiver;
+                return true;
+            }
         }
+        return false;
     }
 
     public void Revoke(TextBox receiver)
@@ -100,9 +169,4 @@ public class InkOverlord : MonoBehaviour {
         _receiver = null;
     }
 
-    public string GetSingleLine(int index)
-    {
-        _inkStory.ChoosePathString("SINGLE_LINES.SL" + index.ToString());
-        return _inkStory.Continue();
-    }
 }

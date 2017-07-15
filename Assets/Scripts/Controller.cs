@@ -9,6 +9,11 @@ public class Controller : MonoBehaviour
 	[SerializeField]
     float _jumpSpeed;
 
+    [SerializeField]
+    float _lookSpeed;
+    [SerializeField]
+    bool GODMODE;
+
     bool _jumping;
     bool _interacting;
     bool _switching;
@@ -37,6 +42,7 @@ public class Controller : MonoBehaviour
             Debug.LogError("Controller must be on a person");
         }
         _personTriggered = new List<Person>();
+        _target.MakeSwitchable();
         ControlPerson(_target);  
     }
 
@@ -60,27 +66,59 @@ public class Controller : MonoBehaviour
 
     void PlayerSwitch()
     {
-        ControlPerson(_personTriggered[0]);
+        Person closest = null;
+        float distance = float.MaxValue;
+        foreach (Person p in _personTriggered)
+        {
+            if (p.IsSwitchable || GODMODE)
+            {
+                float d = Vector3.Distance(p.transform.position, transform.position);
+                if (d < distance)
+                {
+                    closest = p;
+                    distance = d;
+                }
+            }
+        }
+
+        if (closest != null)
+        {
+            ControlPerson(closest);
+            return;
+        }
     }
 
     void PlayerEngage()
     {
         if (_inATalk == null)
         {
+            Person closest = null;
+            float distance = float.MaxValue;
             foreach (Person p in _personTriggered)
             {
-                if (p._isEngageable)
+                if (p.IsEngageable)
                 {
-                    EngagePerson(p);
-                    p._dFinishedTalking += PlayerDisengage;
-                    return;
+                    float d = Vector3.Distance(p.transform.position, transform.position);
+                    if (d < distance)
+                    {
+                        closest = p;
+                        distance = d;
+                    }
                 }
+            }
+
+            if(closest != null)
+            {
+                EngagePerson(closest);
+                closest._dFinishedTalking += PlayerDisengage;
+                return;
             }
         }
     }
 
     void PlayerDisengage()
     {
+        _inATalk._dFinishedTalking -= PlayerDisengage;
         _inATalk = null;
     }
 
@@ -92,15 +130,22 @@ public class Controller : MonoBehaviour
             Debug.Break();
         }
 
+        if(target == _inATalk)
+        {
+            LeavePerson(_inATalk);
+        }
+
         Person oldOne = _currentHost;
         _currentHost = target;
+        InkOverlord.IO.SwitchIdentity(target.Identity);
         if(oldOne != null)
         {
             TriggerPerson(oldOne);
             oldOne.GetComponent<MeshRenderer>().material = ModelsLibrary.ML.randomMaterial;
         }
         LeavePerson(target); //target.NotNearby(gameObject);
-        InkOverlord.IO.SwitchIdentity(target._identity);
+
+        
         target.GetComponent<MeshRenderer>().material = ModelsLibrary.ML.controllerMaterial;
         _hostRigidBody = target.GetComponent<Rigidbody>();
     }
@@ -129,7 +174,7 @@ public class Controller : MonoBehaviour
 
             if (_personTriggered.Count > 0)
             {
-                if (Input.GetButtonDown("Interact") || Input.GetMouseButtonDown(0))
+                if (_inATalk == null && (Input.GetButtonDown("Interact") || Input.GetMouseButtonUp(0)))
                 {
                     
                         if (_dInteractOnce != null)
@@ -157,7 +202,7 @@ public class Controller : MonoBehaviour
         _hostRigidBody.AddForce(verticalAxis * dir * _speed, ForceMode.Acceleration);
         _hostRigidBody.AddForce(horizontalAxis * Vector3.Cross(Vector3.up, dir) * _speed, ForceMode.Acceleration);
         if (Mathf.Abs(lookHorizontalAxis) >= 0.1f)
-            transform.localEulerAngles = transform.localEulerAngles + new Vector3(0, lookHorizontalAxis, 0);
+            transform.localEulerAngles = transform.localEulerAngles + new Vector3(0, lookHorizontalAxis*_lookSpeed, 0);
     }
 
     void TriggerPerson(Person trigger)
@@ -174,7 +219,7 @@ public class Controller : MonoBehaviour
     {
         if(trigger == _inATalk)
         {
-            _inATalk = null;
+            PlayerDisengage();
         }
         trigger.NotNearby(gameObject);
         _personTriggered.Remove(trigger);   

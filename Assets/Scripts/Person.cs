@@ -8,8 +8,6 @@ public class Person : MonoBehaviour {
     TextBox _textBox;
 
     [SerializeField]
-    int _singleLineIndex;
-    [SerializeField]
     string _inkKnot;
     private bool _engaged;
     private bool _isWaiting;
@@ -17,24 +15,54 @@ public class Person : MonoBehaviour {
     public delegate void FeedbackDelegate();
     public FeedbackDelegate _dFinishedTalking;
 
+    public string Identity 
+    {
+        get 
+        {
+            return _inkKnot;
+        }
+    }
+
     bool _lastLine;
 
-    public bool _isEngageable
+    bool? _isEngageable;
+
+    bool _isSwitchable = false;
+    public bool IsSwitchable
     {
         get
         {
-            return _inkKnot != string.Empty;
+            return _isSwitchable;
+        }
+    }
+    public void MakeSwitchable()
+    {
+        _isSwitchable = true;
+        GetComponentInChildren<ParticleSystem>().Play();
+    }
+    public bool IsEngageable
+    {
+        get
+        {
+            if(_isEngageable == null)
+            {
+                _isEngageable = InkOverlord.IO.GetRealKnot(_inkKnot) != string.Empty; 
+            }
+            return _isEngageable.Value;
         }
     }
 
     private ChoiceManager _choiceManager;
     private string _singleLine;
 
-    public string _identity;
-
     void Start () 
 	{
         _dFinishedTalking += Disengage;
+        if(_inkKnot == string.Empty)
+        {
+            _inkKnot = InkOverlord.IO.RequestRandomPerson();
+            MakeSwitchable();
+        }
     }
 
     void GetLine()
@@ -46,8 +74,12 @@ public class Person : MonoBehaviour {
         if(InkOverlord.IO.canContinue)
         {
             string nextLine = InkOverlord.IO.NextLine();
-        
-
+            nextLine = nextLine.Trim();
+            if(nextLine == "NONE")
+            {
+                Disengage();
+                return;
+            }
             if (isImmediate)
             {
                 _textBox.ReadLine(nextLine);
@@ -85,18 +117,23 @@ public class Person : MonoBehaviour {
     }
 	public void Talk()
 	{
-        if (_singleLineIndex != -1)
-            _singleLine = InkOverlord.IO.GetSingleLine(_singleLineIndex);
-        else if (_inkKnot != string.Empty)
+        if (_inkKnot != string.Empty)
             _singleLine = InkOverlord.IO.GetSpecialSingleLine(_inkKnot);
         else
             _singleLine = string.Empty;
-            
+
 		if(_textBox == null && _singleLine != string.Empty)
 		{
         	_textBox = TextBox.CreateTextBox(transform);
             _textBox.FeedLine(_singleLine);
-            _textBox.ReadLine();
+            if(_inkKnot.StartsWith("RANDOM"))
+            {
+                _textBox.ReadLine(Random.Range(0f, 1.5f), Random.Range(0.1f, 0.5f));
+            }
+            else
+            {
+                _textBox.ReadLine();
+            }
         }
     }
 
@@ -104,19 +141,21 @@ public class Person : MonoBehaviour {
     {
         if (_inkKnot != string.Empty)
         {
-            if (_textBox != null)
-            {
-                Destroy(_textBox.gameObject);
+           if(IsEngageable)
+           {
+                if (_textBox != null)
+                {
+                    Destroy(_textBox.gameObject);
+                }
+                _textBox = TextBox.CreateTextBox(transform);
+                InkOverlord.IO.RequestKnot(this, _inkKnot);
+                _choiceManager = ChoiceManager.CreateChoiceManager(transform);
+                _choiceManager.Input += Choice;
+                _textBox.finishedCallback += GetLine;
+                GetLine(true);
+                _engaged = true;
+                _lastLine = false;
             }
-
-            _textBox = TextBox.CreateTextBox(transform);
-            InkOverlord.IO.RequestKnot(_textBox, _inkKnot);
-            _choiceManager = ChoiceManager.CreateChoiceManager(transform);
-            _choiceManager.Input += Choice;
-            _textBox.finishedCallback += GetLine;
-            GetLine(true);
-            _engaged = true;
-            _lastLine = false;
         }
     }
     public void Disengage()
@@ -126,11 +165,14 @@ public class Person : MonoBehaviour {
     }
     public void IsNearby(GameObject player)
     {
-        
+        if(IsSwitchable)
+            GetComponentInChildren<ParticleSystem>().Play();
     }
 
     public void NotNearby(GameObject player)
     {
+        if(player != null) 
+            GetComponentInChildren<ParticleSystem>().Stop();
         if(_engaged)
         {
             InkOverlord.IO.Revoke(_textBox);
@@ -146,6 +188,7 @@ public class Person : MonoBehaviour {
         }
     }
 
+    bool _released;
     // Update is called once per frame
     void Update () 
     {
@@ -160,25 +203,30 @@ public class Person : MonoBehaviour {
             _choiceManager.transform.position = transform.position + Vector3.up * 2f + ((Camera.main.transform.position - transform.position).normalized * .75f);
         }
 
-        Debug.Log("UPDATE");
         if (_engaged)
         {
             Debug.Log("ENGAGED");
-            if(_lastLine && Input.GetButtonUp("Interact"))
+            if (_lastLine)
             {
-                if(_dFinishedTalking != null)
-                _dFinishedTalking();
+                if (_released && Input.GetButtonDown("Interact"))
+                {
+
+                    if (_dFinishedTalking != null)
+                        _dFinishedTalking();
+                }
             }
             else if (_isWaiting && Input.GetButtonDown("Interact"))
             {
                 _isWaiting = false;
+                _released = false;
                 _textBox.ReadLine();
-                
             }
-            else if (_textBox._isReading)
+
+            if (Input.GetButtonUp("Interact"))
             {
-                //    _textBox.DisplayImmediate();
+                _released = true;
             }
+
         }
 	}
 

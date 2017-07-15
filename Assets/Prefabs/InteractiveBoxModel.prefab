@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 222140194691894112}
   - component: {fileID: 114439436247276622}
   - component: {fileID: 114026078253308000}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: InteractiveBoxModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}

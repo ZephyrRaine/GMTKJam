@@ -11,6 +11,7 @@ public class TextBox : TextMeshBox {
         TextBox textBox = go.GetComponent<TextBox>();
         if (textBox != null)
         {
+            textBox.gameObject.AddComponent<BoxCollider>();
             return textBox;
         }
         else
@@ -20,6 +21,7 @@ public class TextBox : TextMeshBox {
     }
 
     SubstringInfo[] textLengthFor;
+    protected RectTransform _rt;
 
     struct SubstringInfo
     {
@@ -153,6 +155,11 @@ public class TextBox : TextMeshBox {
         textLengthFor = textLengths.ToArray();
     }
 
+    void Start()
+    {
+        _rt = GetComponent<RectTransform>();
+    }
+
 
     protected override void Update()
     {
@@ -175,8 +182,9 @@ public class TextBox : TextMeshBox {
                 Debug.Log("FOOOOONT YOOOOOO");
                 _textComponent.ForceMeshUpdate();
             }
-
-
+            BoxCollider bc = GetComponent<BoxCollider>();
+            if(bc != null)
+                GetComponent<BoxCollider>().size = new Vector3(_rt.sizeDelta.x, _rt.sizeDelta.y, 0.5f);
             _textComponent.text = _currentString.Substring(0, textLengthFor[index].StartsAt) + textLengthFor[index].TagSuffix;
         }
         else
