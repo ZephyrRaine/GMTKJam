@@ -7,10 +7,11 @@ public class TextBox : TextMeshBox {
     public static TextBox CreateTextBox(Transform from)
     {
         Debug.Log("SALUT");
-        GameObject go = GameObject.Instantiate(ModelsLibrary.ML.textBox, from.transform.position + Vector3.up * 2f + ((Camera.main.transform.position - from.position).normalized * .5f), (Camera.main.transform.rotation), from);
+        GameObject go = GameObject.Instantiate(ModelsLibrary.ML.textBox, from.transform.position + Vector3.up * (2f - from.localScale.y/2f) + ((Camera.main.transform.position - from.position).normalized * .5f), (Camera.main.transform.rotation));
         TextBox textBox = go.GetComponent<TextBox>();
         if (textBox != null)
         {
+            go.transform.SetParent(from, true);
             textBox.gameObject.AddComponent<BoxCollider>();
             return textBox;
         }
@@ -36,6 +37,7 @@ public class TextBox : TextMeshBox {
                 TagSuffix += tagSuffix;
         }
     }
+
 
     public override void FeedLine(string s)
     {
@@ -159,7 +161,6 @@ public class TextBox : TextMeshBox {
     {
         _rt = GetComponent<RectTransform>();
     }
-
 
     protected override void Update()
     {

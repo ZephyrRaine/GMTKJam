@@ -37,6 +37,7 @@ public class Person : MonoBehaviour {
     }
     public void MakeSwitchable()
     {
+        
         _isSwitchable = true;
         GetComponentInChildren<ParticleSystem>().Play();
     }
@@ -133,7 +134,7 @@ public class Person : MonoBehaviour {
             else
             {
                 _textBox.ReadLine();
-            }
+            } 
         }
     }
 
@@ -152,6 +153,7 @@ public class Person : MonoBehaviour {
                 _choiceManager = ChoiceManager.CreateChoiceManager(transform);
                 _choiceManager.Input += Choice;
                 _textBox.finishedCallback += GetLine;
+        
                 GetLine(true);
                 _engaged = true;
                 _lastLine = false;
@@ -166,13 +168,20 @@ public class Person : MonoBehaviour {
     public void IsNearby(GameObject player)
     {
         if(IsSwitchable)
-            GetComponentInChildren<ParticleSystem>().Play();
+            transform.GetChild(0).GetComponent<ParticleSystem>().Play();
+        if(IsEngageable)
+            transform.GetChild(1).GetComponent<ParticleSystem>().Play();
     }
 
     public void NotNearby(GameObject player)
     {
         if(player != null) 
-            GetComponentInChildren<ParticleSystem>().Stop();
+        {
+            if (IsSwitchable)
+                transform.GetChild(0).GetComponent<ParticleSystem>().Stop();
+            if (IsEngageable)
+                transform.GetChild(1).GetComponent<ParticleSystem>().Stop();
+        }
         if(_engaged)
         {
             InkOverlord.IO.Revoke(_textBox);
@@ -195,12 +204,13 @@ public class Person : MonoBehaviour {
         if(_textBox != null)
         {
             _textBox.transform.rotation = (Camera.main.transform.rotation);
-            _textBox.transform.position = transform.position + Vector3.up * 2f + ((Camera.main.transform.position - transform.position).normalized * .75f);
+            _textBox.transform.position = transform.position + Vector3.up * (2f - transform.localScale.y/2f) + ((Camera.main.transform.position - transform.position).normalized * .75f);
         }
         if(_choiceManager != null)
         {
             _choiceManager.transform.rotation = (Camera.main.transform.rotation);
-            _choiceManager.transform.position = transform.position + Vector3.up * 2f + ((Camera.main.transform.position - transform.position).normalized * .75f);
+            // _choiceManager.transform.position = transform.position + Vector3.up * (2f - transform.localScale.y/2f) + ((Camera.main.transform.position - transform.position).normalized * .75f);
+            _choiceManager.transform.position = _textBox.transform.position + Vector3.Cross(_textBox.transform.forward, Vector3.up) * 5f;
         }
 
         if (_engaged)
@@ -208,21 +218,20 @@ public class Person : MonoBehaviour {
             Debug.Log("ENGAGED");
             if (_lastLine)
             {
-                if (_released && Input.GetButtonDown("Interact"))
+                if (_released && (Input.GetButtonDown("Interact") || Input.GetMouseButtonDown(0)))
                 {
-
                     if (_dFinishedTalking != null)
                         _dFinishedTalking();
                 }
             }
-            else if (_isWaiting && Input.GetButtonDown("Interact"))
+            else if (_isWaiting && (Input.GetButtonDown("Interact") || Input.GetMouseButtonDown(0)))
             {
                 _isWaiting = false;
                 _released = false;
                 _textBox.ReadLine();
             }
 
-            if (Input.GetButtonUp("Interact"))
+            if(Input.GetButtonUp("Interact") || Input.GetMouseButtonUp(0))
             {
                 _released = true;
             }

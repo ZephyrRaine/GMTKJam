@@ -31,6 +31,8 @@ public class Controller : MonoBehaviour
 
     List<Person> _personTriggered;
     Rigidbody _hostRigidBody;
+    private bool _skipFrameSorry;
+
     // Use this for initialization
     void Start () 
     {
@@ -53,7 +55,7 @@ public class Controller : MonoBehaviour
             Person p = _personTriggered[i];
             if (p != person)
             {
-                LeavePerson(p);
+                p.NotNearby(gameObject);
             }
         }
         _inATalk = person;
@@ -120,6 +122,11 @@ public class Controller : MonoBehaviour
     {
         _inATalk._dFinishedTalking -= PlayerDisengage;
         _inATalk = null;
+        _skipFrameSorry = true;
+        foreach(Person p in _personTriggered)
+        {
+            TriggerPerson(p);
+        }
     }
 
     void ControlPerson(Person target)
@@ -174,7 +181,11 @@ public class Controller : MonoBehaviour
 
             if (_personTriggered.Count > 0)
             {
-                if (_inATalk == null && (Input.GetButtonDown("Interact") || Input.GetMouseButtonUp(0)))
+                if(_skipFrameSorry)
+                {
+                    _skipFrameSorry = false;
+                }
+                else if (_inATalk == null && (Input.GetButtonDown("Interact") || Input.GetMouseButtonDown(0)))
                 {
                     
                         if (_dInteractOnce != null)
@@ -197,7 +208,7 @@ public class Controller : MonoBehaviour
     {
         float verticalAxis = Input.GetAxis("Vertical");
         float horizontalAxis = Input.GetAxis("Horizontal");
-        float lookHorizontalAxis = Input.GetAxis("Mouse X");
+        float lookHorizontalAxis = Input.GetAxis("Camera X");
         Vector3 dir = (transform.position - Camera.main.transform.position).normalized;
         _hostRigidBody.AddForce(verticalAxis * dir * _speed, ForceMode.Acceleration);
         _hostRigidBody.AddForce(horizontalAxis * Vector3.Cross(Vector3.up, dir) * _speed, ForceMode.Acceleration);
@@ -210,7 +221,8 @@ public class Controller : MonoBehaviour
         if (trigger != _currentHost)
         {
             trigger.IsNearby(gameObject);
-            _personTriggered.Add(trigger);
+            if(!_personTriggered.Contains(trigger))
+                _personTriggered.Add(trigger);
             trigger.Talk();
         }
     }

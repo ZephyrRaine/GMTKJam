@@ -1,0 +1,265 @@
+fileFormatVersion: 2
+guid: c51fe5298b2ed714e9fc01668eaeece1
+timeCreated: 1500195602
+licenseType: Free
+ModelImporter:
+  serializedVersion: 21
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: group1
+    100004: group2
+    100006: group3
+    100008: pHelixShape1_instancer4_0
+    100010: pHelixShape1_instancer4_1
+    100012: pHelixShape1_instancer4_11
+    100014: pHelixShape1_instancer4_12
+    100016: pHelixShape1_instancer4_13
+    100018: pHelixShape1_instancer4_14
+    100020: pHelixShape1_instancer4_15
+    100022: pHelixShape1_instancer4_16
+    100024: pHelixShape1_instancer4_17
+    100026: pHelixShape1_instancer4_18
+    100028: pHelixShape1_instancer4_19
+    100030: pHelixShape1_instancer4_2
+    100032: pHelixShape1_instancer4_20
+    100034: pHelixShape1_instancer4_21
+    100036: pHelixShape1_instancer4_22
+    100038: pHelixShape1_instancer4_23
+    100040: pHelixShape1_instancer4_24
+    100042: pHelixShape1_instancer4_25
+    100044: pHelixShape1_instancer4_26
+    100046: pHelixShape1_instancer4_27
+    100048: pHelixShape1_instancer4_28
+    100050: pHelixShape1_instancer4_29
+    100052: pHelixShape1_instancer4_3
+    100054: pHelixShape1_instancer4_4
+    100056: pHelixShape1_instancer4_5
+    100058: pHelixShape1_instancer4_6
+    100060: pHelixShape1_instancer4_7
+    100062: pHelixShape1_instancer4_8
+    100064: pHelixShape1_instancer4_9
+    400000: //RootNode
+    400002: group1
+    400004: group2
+    400006: group3
+    400008: pHelixShape1_instancer4_0
+    400010: pHelixShape1_instancer4_1
+    400012: pHelixShape1_instancer4_11
+    400014: pHelixShape1_instancer4_12
+    400016: pHelixShape1_instancer4_13
+    400018: pHelixShape1_instancer4_14
+    400020: pHelixShape1_instancer4_15
+    400022: pHelixShape1_instancer4_16
+    400024: pHelixShape1_instancer4_17
+    400026: pHelixShape1_instancer4_18
+    400028: pHelixShape1_instancer4_19
+    400030: pHelixShape1_instancer4_2
+    400032: pHelixShape1_instancer4_20
+    400034: pHelixShape1_instancer4_21
+    400036: pHelixShape1_instancer4_22
+    400038: pHelixShape1_instancer4_23
+    400040: pHelixShape1_instancer4_24
+    400042: pHelixShape1_instancer4_25
+    400044: pHelixShape1_instancer4_26
+    400046: pHelixShape1_instancer4_27
+    400048: pHelixShape1_instancer4_28
+    400050: pHelixShape1_instancer4_29
+    400052: pHelixShape1_instancer4_3
+    400054: pHelixShape1_instancer4_4
+    400056: pHelixShape1_instancer4_5
+    400058: pHelixShape1_instancer4_6
+    400060: pHelixShape1_instancer4_7
+    400062: pHelixShape1_instancer4_8
+    400064: pHelixShape1_instancer4_9
+    2300000: pHelixShape1_instancer4_0
+    2300002: pHelixShape1_instancer4_1
+    2300004: pHelixShape1_instancer4_11
+    2300006: pHelixShape1_instancer4_12
+    2300008: pHelixShape1_instancer4_13
+    2300010: pHelixShape1_instancer4_14
+    2300012: pHelixShape1_instancer4_15
+    2300014: pHelixShape1_instancer4_16
+    2300016: pHelixShape1_instancer4_17
+    2300018: pHelixShape1_instancer4_18
+    2300020: pHelixShape1_instancer4_19
+    2300022: pHelixShape1_instancer4_2
+    2300024: pHelixShape1_instancer4_20
+    2300026: pHelixShape1_instancer4_21
+    2300028: pHelixShape1_instancer4_22
+    2300030: pHelixShape1_instancer4_23
+    2300032: pHelixShape1_instancer4_24
+    2300034: pHelixShape1_instancer4_25
+    2300036: pHelixShape1_instancer4_26
+    2300038: pHelixShape1_instancer4_27
+    2300040: pHelixShape1_instancer4_28
+    2300042: pHelixShape1_instancer4_29
+    2300044: pHelixShape1_instancer4_3
+    2300046: pHelixShape1_instancer4_4
+    2300048: pHelixShape1_instancer4_5
+    2300050: pHelixShape1_instancer4_6
+    2300052: pHelixShape1_instancer4_7
+    2300054: pHelixShape1_instancer4_8
+    2300056: pHelixShape1_instancer4_9
+    3300000: pHelixShape1_instancer4_0
+    3300002: pHelixShape1_instancer4_1
+    3300004: pHelixShape1_instancer4_11
+    3300006: pHelixShape1_instancer4_12
+    3300008: pHelixShape1_instancer4_13
+    3300010: pHelixShape1_instancer4_14
+    3300012: pHelixShape1_instancer4_15
+    3300014: pHelixShape1_instancer4_16
+    3300016: pHelixShape1_instancer4_17
+    3300018: pHelixShape1_instancer4_18
+    3300020: pHelixShape1_instancer4_19
+    3300022: pHelixShape1_instancer4_2
+    3300024: pHelixShape1_instancer4_20
+    3300026: pHelixShape1_instancer4_21
+    3300028: pHelixShape1_instancer4_22
+    3300030: pHelixShape1_instancer4_23
+    3300032: pHelixShape1_instancer4_24
+    3300034: pHelixShape1_instancer4_25
+    3300036: pHelixShape1_instancer4_26
+    3300038: pHelixShape1_instancer4_27
+    3300040: pHelixShape1_instancer4_28
+    3300042: pHelixShape1_instancer4_29
+    3300044: pHelixShape1_instancer4_3
+    3300046: pHelixShape1_instancer4_4
+    3300048: pHelixShape1_instancer4_5
+    3300050: pHelixShape1_instancer4_6
+    3300052: pHelixShape1_instancer4_7
+    3300054: pHelixShape1_instancer4_8
+    3300056: pHelixShape1_instancer4_9
+    4300000: pHelixShape1_instancer4_0
+    4300002: pHelixShape1_instancer4_1
+    4300004: pHelixShape1_instancer4_2
+    4300006: pHelixShape1_instancer4_3
+    4300008: pHelixShape1_instancer4_4
+    4300010: pHelixShape1_instancer4_5
+    4300012: pHelixShape1_instancer4_6
+    4300014: pHelixShape1_instancer4_7
+    4300016: pHelixShape1_instancer4_8
+    4300018: pHelixShape1_instancer4_9
+    4300020: pHelixShape1_instancer4_11
+    4300022: pHelixShape1_instancer4_12
+    4300024: pHelixShape1_instancer4_13
+    4300026: pHelixShape1_instancer4_14
+    4300028: pHelixShape1_instancer4_15
+    4300030: pHelixShape1_instancer4_16
+    4300032: pHelixShape1_instancer4_17
+    4300034: pHelixShape1_instancer4_18
+    4300036: pHelixShape1_instancer4_19
+    4300038: pHelixShape1_instancer4_20
+    4300040: pHelixShape1_instancer4_21
+    4300042: pHelixShape1_instancer4_22
+    4300044: pHelixShape1_instancer4_23
+    4300046: pHelixShape1_instancer4_24
+    4300048: pHelixShape1_instancer4_25
+    4300050: pHelixShape1_instancer4_26
+    4300052: pHelixShape1_instancer4_27
+    4300054: pHelixShape1_instancer4_28
+    4300056: pHelixShape1_instancer4_29
+    7400000: Take 001
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Take 001
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 300
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

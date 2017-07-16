@@ -120,16 +120,16 @@ MonoBehaviour:
         neutralWhiteLevel: 8.3
         neutralWhiteClip: 8.8
       basic:
-        postExposure: 0
-        temperature: 2
+        postExposure: -0.3
+        temperature: 4.6
         tint: 0
         hueShift: 0
-        saturation: 1
-        contrast: 1
+        saturation: 1.889
+        contrast: 0.932
       channelMixer:
-        red: {x: 1, y: 0, z: 0}
-        green: {x: 0, y: 1, z: 0}
-        blue: {x: 0, y: 0, z: 1}
+        red: {x: 1.08, y: 0, z: 0}
+        green: {x: 0, y: 0.83, z: 0}
+        blue: {x: 0, y: 0, z: 0.76}
         currentEditingChannel: 0
       colorWheels:
         mode: 1
@@ -281,10 +281,10 @@ MonoBehaviour:
       lut: {fileID: 0}
       contribution: 1
   chromaticAberration:
-    m_Enabled: 0
+    m_Enabled: 1
     m_Settings:
       spectralTexture: {fileID: 10910, guid: 0000000000000000f000000000000000, type: 0}
-      intensity: 0.821
+      intensity: 0.167
   grain:
     m_Enabled: 0
     m_Settings:
@@ -298,8 +298,8 @@ MonoBehaviour:
       mode: 0
       color: {r: 0, g: 0, b: 0, a: 1}
       center: {x: 0.5, y: 0.5}
-      intensity: 0.171
-      smoothness: 0.2
+      intensity: 0.218
+      smoothness: 1
       roundness: 1
       mask: {fileID: 0}
       opacity: 1

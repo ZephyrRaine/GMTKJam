@@ -22,6 +22,11 @@ public static class InkEventWatcher
     
     public static void Trigger(string id)
     {
-        subscribedEvents[id].Trigger();
+        if(subscribedEvents.ContainsKey(id))
+        {
+            subscribedEvents[id].Trigger();
+        }
+        else
+            Debug.Log("Can't find key " + id);
     }
 }

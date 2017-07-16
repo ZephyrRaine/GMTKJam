@@ -7,6 +7,7 @@ using System;
 public class InkOverlord : MonoBehaviour {
 
     static InkOverlord _instance;
+
     public static InkOverlord IO
 	{
 		get 
@@ -15,11 +16,26 @@ public class InkOverlord : MonoBehaviour {
         }
 	}
 
+    public void ChangeVariable(string key, object v)
+    {
+        _inkStory.variablesState[key] = v;
+    }
+
     [SerializeField] TextAsset _storyScript;
-    Story _inkStory;
+    Story _inkStory; 
     Person _receiver;
 
-	public bool canContinue
+    int _count = 0;
+    int _maxCount = 7;
+
+    public void incrementCount()
+    {
+_count++;
+transform.GetChild(0).GetComponent<TMPro.TMP_Text>().text = _count.ToString() + "/" + _maxCount.ToString();
+Camera.main.GetComponent<AudioSource>().Play();
+    }
+
+    public bool canContinue
 	{
 		get 
 		{
@@ -103,14 +119,20 @@ public class InkOverlord : MonoBehaviour {
         _inkStory = new Story(_storyScript.text);
         _inkStory.BindExternalFunction("CANSWITCH", () =>
        {
+           if(!_receiver.IsSwitchable)
+               incrementCount();
            _receiver.MakeSwitchable();
        });
-    
 
        _inkStory.BindExternalFunction("TRIGGEREVENT", (string id) =>
        {
            InkEventWatcher.Trigger(id);
        });
+    }
+
+    void Start()
+    {
+        transform.GetChild(0).GetComponent<TMPro.TMP_Text>().text = 0 + "/" + _maxCount.ToString();
     }
 
     public string RequestRandomPerson()

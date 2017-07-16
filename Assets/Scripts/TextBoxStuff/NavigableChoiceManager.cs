@@ -42,7 +42,7 @@ public class NavigableChoiceManager : ChoiceManager
         if (IsBusy)
         {
 
-            float verticalAxis = UnityEngine.Input.GetAxis("Mouse Y");
+            float verticalAxis = UnityEngine.Input.GetAxis("Menu Y");
 
             if (Mathf.Abs(verticalAxis) > 0)
             {
@@ -54,13 +54,21 @@ public class NavigableChoiceManager : ChoiceManager
                 }
                 _timer -= Time.deltaTime;
             }
+            else if (UnityEngine.Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                UpdateIndex(-1);
+            }
+            else if (UnityEngine.Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                UpdateIndex(1);
+            }
             else
             {
                 UpdateIndex(0);
                 _released = true;
             }
 
-            if (UnityEngine.Input.GetAxis("Interact") > 0)
+            if (UnityEngine.Input.GetButtonDown("Interact") || UnityEngine.Input.GetMouseButtonDown(0))
             {
                 if (_releasedInteract)
                 {

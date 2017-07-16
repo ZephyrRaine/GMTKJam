@@ -4,13 +4,6 @@
 = SL
 Life is just pain and numbing pain. 
 ->DONE
-= DIALOGUE
-Dude, 
-I realised that the key to life is seeing what IS there, rather than what isn't. 
-Then you appreciate everything. 
-Dude. 
-Then, a few hours later, I realised doing this is hard, when you realise you are nothing.
-->DONE
 === RANDOM1 ===
 = SL
 At least I feel like Jesus when I smile.
@@ -49,7 +42,6 @@ She said, "you're more fun when you're off your meds."
 Haha. 
 ->DONE
 
-
 === RANDOM8 ===
 = SL
 I buy my booze from the shop I got fired from.
@@ -61,6 +53,7 @@ Our breaths smell of vomit, but neither of us mind.
 ->DONE
 = DIALOGUE
 I love him so much.
+I wonder if he's around.
 ->DONE
 === RANDOM10 ===
 = SL
