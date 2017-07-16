@@ -16,14 +16,14 @@ EXTERNAL TRIGGEREVENT(id)
 = DIALOGUE
 {
     -IDENTITY == "CHILD":
-    you won't go anywhere today...
+    You won't go anywhere today...
     ...
-    sorry...
+    Sorry...
     ->DONE
     -else:
-    oh.
-    it's you.
-    great...
+    Oh.
+    It's you.
+    Great...
     {CANSWITCH()}
     ->DONE
 }
@@ -31,7 +31,7 @@ EXTERNAL TRIGGEREVENT(id)
 = SL
 {
     - IDENTITY == "CHILD":
-    i'm sorry
+    I'm sorry
     ->DONE
     - IDENTITY == "DAD":
     NONE
@@ -47,22 +47,21 @@ EXTERNAL TRIGGEREVENT(id)
     - IDENTITY == "CHILD":
     {
         - MOM.DIALOGUE:
-        i thought <i>you</i> could go out.
-        i know <b>I can</b>
+        I thought <i>you</i> could go out.
+        I know <size=6>I can</size>
         {CANSWITCH()}
         ->DONE
         - else:
-        you should go now.
+        You should go now.
         ->DONE
     }
     - IDENTITY == "MOM" && !OPEN:
-    can we go out now?
-    +let's stay here for a while...
-        it's frightening outside
-        i don't want to loose you
+    Can we go out now?
+    +["Let's stay here for a while..."] "It's frightening outside."
+        "I don't want to loose you."
         ->DONE
-    +sure, let's go
-        ~OPEN = true
+    +["Sure..."] "...we all gotta die anyway.
+    ~OPEN = true
         {TRIGGEREVENT("MURZONE0")}
         ->DONE
     -else:
@@ -184,7 +183,7 @@ Then, a few hours later, I realised doing this is hard, when you realise you are
 }
 === LOST
 = SL
-"Haa, it feels good to be alone..."
+Haa, it feels good to be alone...
 ->DONE
 = DIALOGUE
 Oh.

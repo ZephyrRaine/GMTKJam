@@ -30,9 +30,13 @@ public class InkOverlord : MonoBehaviour {
 
     public void incrementCount()
     {
-_count++;
-transform.GetChild(0).GetComponent<TMPro.TMP_Text>().text = _count.ToString() + "/" + _maxCount.ToString();
-Camera.main.GetComponent<AudioSource>().Play();
+        _count++;
+        if (_count == _maxCount)
+        {
+            _inkStory.variablesState["GOOD"] = 1;
+        }
+        transform.GetChild(0).GetComponent<TMPro.TMP_Text>().text = _count.ToString() + "/" + _maxCount.ToString();
+        Camera.main.GetComponent<AudioSource>().Play();
     }
 
     public bool canContinue
